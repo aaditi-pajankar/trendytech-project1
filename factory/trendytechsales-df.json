@@ -1,0 +1,9 @@
+{
+	"name": "trendytechsales-df",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d84578ae-10cb-4935-a1bc-955f850915cc",
+		"tenantId": "29d12ad1-5b63-46e3-ac00-8dd7ae505c93"
+	}
+}
