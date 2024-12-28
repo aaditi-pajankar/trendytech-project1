@@ -14,7 +14,7 @@
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/sales/blobs/landing",
-			"blobPathEndsWith": "orders",
+			"blobPathEndsWith": "orders.csv",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1",
 			"events": [
