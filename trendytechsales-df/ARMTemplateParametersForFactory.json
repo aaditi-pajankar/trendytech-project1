@@ -8,6 +8,9 @@
 		"ls_storageaccount_accountKey": {
 			"value": ""
 		},
+		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
+			"value": "1228-113635-j94mpasw"
+		},
 		"ls_key_vault_properties_typeProperties_baseUrl": {
 			"value": "https://kvazuredatabricks.vault.azure.net/"
 		},

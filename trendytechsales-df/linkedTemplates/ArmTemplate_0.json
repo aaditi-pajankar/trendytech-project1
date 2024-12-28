@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "https://projectusecase1.dfs.core.windows.net/"
 		},
+		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1228-113635-j94mpasw"
+		},
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
@@ -75,14 +79,7 @@
 						},
 						"secretName": "databricks-access-token"
 					},
-					"newClusterNodeType": "Standard_F4s",
-					"newClusterNumOfWorker": "1",
-					"newClusterSparkEnvVars": {
-						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-					},
-					"newClusterVersion": "10.4.x-scala2.12",
-					"clusterOption": "Fixed",
-					"newClusterInitScripts": []
+					"existingClusterId": "[parameters('ls_azure_databricks_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": [

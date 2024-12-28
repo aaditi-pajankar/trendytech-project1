@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_storageaccount'"
 		},
+		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1228-113635-j94mpasw"
+		},
 		"ls_key_vault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://kvazuredatabricks.vault.azure.net/"
@@ -58,6 +62,9 @@
 					},
 					"ls_storageaccount_properties_typeProperties_url": {
 						"value": "[parameters('ls_storageaccount_properties_typeProperties_url')]"
+					},
+					"ls_azure_databricks_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_azure_databricks_properties_typeProperties_existingClusterId')]"
 					},
 					"trigger1_properties_typeProperties_scope": {
 						"value": "[parameters('trigger1_properties_typeProperties_scope')]"
