@@ -144,7 +144,7 @@
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/sales/blobs/landing",
-					"blobPathEndsWith": "orders",
+					"blobPathEndsWith": "orders.csv",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
 					"events": [
