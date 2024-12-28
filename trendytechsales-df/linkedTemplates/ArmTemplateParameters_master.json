@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "trendytechsales-df"
+		},
+		"ls_storageaccount_accountKey": {
+			"value": ""
+		},
+		"ls_key_vault_properties_typeProperties_baseUrl": {
+			"value": "https://kvazuredatabricks.vault.azure.net/"
+		},
+		"ls_storageaccount_properties_typeProperties_url": {
+			"value": "https://projectusecase1.dfs.core.windows.net/"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"value": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
