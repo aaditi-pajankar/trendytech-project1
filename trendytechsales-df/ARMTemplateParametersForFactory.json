@@ -22,6 +22,16 @@
 		},
 		"trigger1_properties_typeProperties_scope": {
 			"value": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
+		},
+		"ls_amazons3_properties_typeProperties_accessKeyId": {
+			"value": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "awsaccesskeyId"
+			}
 		}
 	}
 }

@@ -30,6 +30,17 @@
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
+		},
+		"ls_amazons3_properties_typeProperties_accessKeyId": {
+			"type": "object",
+			"defaultValue": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "awsaccesskeyId"
+			}
 		}
 	},
 	"variables": {
@@ -168,6 +179,31 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Project1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_amazons3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AmazonS3",
+				"typeProperties": {
+					"serviceUrl": "https://s3.amazonaws.com",
+					"accessKeyId": "[parameters('ls_amazons3_properties_typeProperties_accessKeyId')]",
+					"secretAccessKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "awssecreetkey"
+					},
+					"authenticationType": "AccessKey"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_key_vault')]"
 			]
 		}
 	]

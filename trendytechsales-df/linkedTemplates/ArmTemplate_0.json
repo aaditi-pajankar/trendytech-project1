@@ -23,6 +23,17 @@
 			"type": "string",
 			"defaultValue": "1228-113635-j94mpasw"
 		},
+		"ls_amazons3_properties_typeProperties_accessKeyId": {
+			"type": "object",
+			"defaultValue": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "awsaccesskeyId"
+			}
+		},
 		"trigger1_properties_Project1_parameters_filename": {
 			"type": "string",
 			"defaultValue": "@triggerBody().filename"
@@ -84,6 +95,31 @@
 						"secretName": "databricks-access-token"
 					},
 					"existingClusterId": "[parameters('ls_azure_databricks_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_key_vault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_amazons3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AmazonS3",
+				"typeProperties": {
+					"serviceUrl": "https://s3.amazonaws.com",
+					"accessKeyId": "[parameters('ls_amazons3_properties_typeProperties_accessKeyId')]",
+					"secretAccessKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "awssecreetkey"
+					},
+					"authenticationType": "AccessKey"
 				}
 			},
 			"dependsOn": [
