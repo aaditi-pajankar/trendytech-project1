@@ -22,6 +22,18 @@
 				"secretName": "awsaccesskeyId"
 			}
 		},
+		"ls_azureSQLDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "trendytech-sql-server1.database.windows.net"
+		},
+		"ls_azureSQLDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "trendytech-sql-db"
+		},
+		"ls_azureSQLDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin-sql"
+		},
 		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "1228-113635-j94mpasw"
@@ -80,6 +92,15 @@
 					},
 					"ls_amazons3_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('ls_amazons3_properties_typeProperties_accessKeyId')]"
+					},
+					"ls_azureSQLDB_properties_typeProperties_server": {
+						"value": "[parameters('ls_azureSQLDB_properties_typeProperties_server')]"
+					},
+					"ls_azureSQLDB_properties_typeProperties_database": {
+						"value": "[parameters('ls_azureSQLDB_properties_typeProperties_database')]"
+					},
+					"ls_azureSQLDB_properties_typeProperties_userName": {
+						"value": "[parameters('ls_azureSQLDB_properties_typeProperties_userName')]"
 					},
 					"ls_azure_databricks_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('ls_azure_databricks_properties_typeProperties_existingClusterId')]"

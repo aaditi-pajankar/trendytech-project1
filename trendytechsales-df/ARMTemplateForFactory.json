@@ -22,6 +22,18 @@
 				"secretName": "awsaccesskeyId"
 			}
 		},
+		"ls_azureSQLDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "trendytech-sql-server1.database.windows.net"
+		},
+		"ls_azureSQLDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "trendytech-sql-db"
+		},
+		"ls_azureSQLDB_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin-sql"
+		},
 		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "1228-113635-j94mpasw"
@@ -280,6 +292,34 @@
 						"secretName": "awssecreetkey"
 					},
 					"authenticationType": "AccessKey"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_key_vault')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_azureSQLDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_azureSQLDB_properties_typeProperties_server')]",
+					"database": "[parameters('ls_azureSQLDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_azureSQLDB_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "azure-lookup-status"
+					}
 				}
 			},
 			"dependsOn": [
