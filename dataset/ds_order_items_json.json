@@ -1,0 +1,20 @@
+{
+	"name": "ds_order_items_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_amazons3",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AmazonS3Location",
+				"bucketName": "trendytechsales",
+				"folderPath": "order-items",
+				"fileName": "order_items.json"
+			}
+		},
+		"schema": {}
+	}
+}
