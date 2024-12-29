@@ -1,0 +1,23 @@
+{
+	"name": "ls_azureSQLDB",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "trendytech-sql-server1.database.windows.net",
+			"database": "trendytech-sql-db",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "admin-sql",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "azure-lookup-status"
+			}
+		}
+	}
+}
