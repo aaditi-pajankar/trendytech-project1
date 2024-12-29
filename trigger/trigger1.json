@@ -8,6 +8,9 @@
 				"pipelineReference": {
 					"referenceName": "Project1",
 					"type": "PipelineReference"
+				},
+				"parameters": {
+					"filename": "@triggerBody().filename"
 				}
 			}
 		],
