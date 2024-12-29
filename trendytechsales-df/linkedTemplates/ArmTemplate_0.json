@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "1228-113635-j94mpasw"
 		},
+		"trigger1_properties_Project1_parameters_filename": {
+			"type": "string",
+			"defaultValue": "@triggerBody().filename"
+		},
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
@@ -105,7 +109,13 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/shrikantpajankar@gmail.com/Sales Project trendytech"
+							"notebookPath": "/Users/shrikantpajankar@gmail.com/Sales Project trendytech",
+							"baseParameters": {
+								"filename": {
+									"value": "@pipeline().parameters.filename",
+									"type": "Expression"
+								}
+							}
 						},
 						"linkedServiceName": {
 							"referenceName": "ls_azure_databricks",
@@ -115,6 +125,11 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
 				},
 				"annotations": []
 			},
@@ -135,7 +150,9 @@
 							"referenceName": "Project1",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"filename": "[parameters('trigger1_properties_Project1_parameters_filename')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",
