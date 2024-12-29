@@ -15,7 +15,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/shrikantpajankar@gmail.com/Sales Project trendytech"
+					"notebookPath": "/Users/shrikantpajankar@gmail.com/Sales Project trendytech",
+					"baseParameters": {
+						"filename": {
+							"value": "@pipeline().parameters.filename",
+							"type": "Expression"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "ls_azure_databricks",
