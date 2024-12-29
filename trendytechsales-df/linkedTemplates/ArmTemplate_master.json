@@ -11,6 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_storageaccount'"
 		},
+		"ls_amazons3_properties_typeProperties_accessKeyId": {
+			"type": "object",
+			"defaultValue": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "awsaccesskeyId"
+			}
+		},
 		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "1228-113635-j94mpasw"
@@ -30,17 +41,6 @@
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
-		},
-		"ls_amazons3_properties_typeProperties_accessKeyId": {
-			"type": "object",
-			"defaultValue": {
-				"type": "AzureKeyVaultSecret",
-				"store": {
-					"referenceName": "ls_key_vault",
-					"type": "LinkedServiceReference"
-				},
-				"secretName": "awsaccesskeyId"
-			}
 		},
 		"containerUri": {
 			"type": "string",
@@ -78,11 +78,11 @@
 					"ls_storageaccount_properties_typeProperties_url": {
 						"value": "[parameters('ls_storageaccount_properties_typeProperties_url')]"
 					},
-					"ls_azure_databricks_properties_typeProperties_existingClusterId": {
-						"value": "[parameters('ls_azure_databricks_properties_typeProperties_existingClusterId')]"
-					},
 					"ls_amazons3_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('ls_amazons3_properties_typeProperties_accessKeyId')]"
+					},
+					"ls_azure_databricks_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_azure_databricks_properties_typeProperties_existingClusterId')]"
 					},
 					"trigger1_properties_Project1_parameters_filename": {
 						"value": "[parameters('trigger1_properties_Project1_parameters_filename')]"

@@ -11,6 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_storageaccount'"
 		},
+		"ls_amazons3_properties_typeProperties_accessKeyId": {
+			"type": "object",
+			"defaultValue": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_key_vault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "awsaccesskeyId"
+			}
+		},
 		"ls_azure_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "1228-113635-j94mpasw"
@@ -30,17 +41,6 @@
 		"trigger1_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/fb9805a6-80df-48a2-b2ab-885d3865fbaa/resourceGroups/trendytech-rg/providers/Microsoft.Storage/storageAccounts/projectusecase1"
-		},
-		"ls_amazons3_properties_typeProperties_accessKeyId": {
-			"type": "object",
-			"defaultValue": {
-				"type": "AzureKeyVaultSecret",
-				"store": {
-					"referenceName": "ls_key_vault",
-					"type": "LinkedServiceReference"
-				},
-				"secretName": "awsaccesskeyId"
-			}
 		}
 	},
 	"variables": {
@@ -56,7 +56,14 @@
 					{
 						"name": "Project1",
 						"type": "DatabricksNotebook",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -78,6 +85,111 @@
 							"referenceName": "ls_azure_databricks",
 							"type": "LinkedServiceReference"
 						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AmazonS3ReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".csv"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['order_item_id']"
+										},
+										"sink": {
+											"name": "order_item_id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['order_item_order_id']"
+										},
+										"sink": {
+											"name": "order_item_order_id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['order_item_product_id']"
+										},
+										"sink": {
+											"name": "order_item_product_id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['order_item_quantity']"
+										},
+										"sink": {
+											"name": "order_item_quantity"
+										}
+									},
+									{
+										"source": {
+											"path": "$['order_item_subtotal']"
+										},
+										"sink": {
+											"name": "order_item_subtotal"
+										}
+									},
+									{
+										"source": {
+											"path": "$['order_item_product_price']"
+										},
+										"sink": {
+											"name": "order_item_product_price"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_order_items_json",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_dink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -91,7 +203,87 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_databricks')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_databricks')]",
+				"[concat(variables('factoryId'), '/datasets/ds_order_items_json')]",
+				"[concat(variables('factoryId'), '/datasets/ds_dink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_dink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_storageaccount",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "orderitems",
+						"fileSystem": "sales"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_storageaccount')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_order_items_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_amazons3",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AmazonS3Location",
+						"bucketName": "trendytechsales",
+						"folderPath": "order-items",
+						"fileName": "order_items.json"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_amazons3')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_amazons3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AmazonS3",
+				"typeProperties": {
+					"serviceUrl": "https://s3.amazonaws.com",
+					"accessKeyId": "[parameters('ls_amazons3_properties_typeProperties_accessKeyId')]",
+					"secretAccessKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_key_vault",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "awssecreetkey"
+					},
+					"authenticationType": "AccessKey"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_key_vault')]"
 			]
 		},
 		{
@@ -179,31 +371,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Project1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_amazons3')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AmazonS3",
-				"typeProperties": {
-					"serviceUrl": "https://s3.amazonaws.com",
-					"accessKeyId": "[parameters('ls_amazons3_properties_typeProperties_accessKeyId')]",
-					"secretAccessKey": {
-						"type": "AzureKeyVaultSecret",
-						"store": {
-							"referenceName": "ls_key_vault",
-							"type": "LinkedServiceReference"
-						},
-						"secretName": "awssecreetkey"
-					},
-					"authenticationType": "AccessKey"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_key_vault')]"
 			]
 		}
 	]
